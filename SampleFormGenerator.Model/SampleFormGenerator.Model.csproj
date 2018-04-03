@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{ECA94F7D-CBC9-4CA7-A0DF-BA8D0F934F68}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>SampleFormGenerator.Model</RootNamespace>
     <AssemblyName>SampleFormGenerator.Model</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
@@ -43,10 +46,9 @@
     <Compile Include="Entities\TblFormInfos.cs" />
     <Compile Include="Entities\TblFormValues.cs" />
     <Compile Include="Entities\TblParameterTypes.cs" />
+    <Compile Include="ViewModel\vmForms.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModel\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Reference Include="System.Data" />
   </ItemGroup>
