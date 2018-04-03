@@ -34,5 +34,21 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Contracts\IConnection.cs" />
+    <Compile Include="Contracts\IEntity.cs" />
+    <Compile Include="Contracts\IRepository.cs" />
+    <Compile Include="Entities\TblFormData.cs" />
+    <Compile Include="Entities\TblFormInfoParameters.cs" />
+    <Compile Include="Entities\TblFormInfos.cs" />
+    <Compile Include="Entities\TblFormValues.cs" />
+    <Compile Include="Entities\TblParameterTypes.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModel\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Data" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

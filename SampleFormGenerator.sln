@@ -3,13 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleFormGenerator.DAL", "SampleFormGenerator.DAL\SampleFormGenerator.DAL.csproj", "{FF903891-4469-4474-9228-4EEA284A7B10}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SampleFormGenerator.Database", "SampleFormGenerator.Database\SampleFormGenerator.Database.sqlproj", "{23815073-D0BE-4796-8016-F3CC64E8EF86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleFormGenerator.BAL", "SampleFormGenerator.BAL\SampleFormGenerator.BAL.csproj", "{E983A813-C152-42B3-B4B0-D9E25C0893DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleFormGenerator.BAL", "SampleFormGenerator.BAL\SampleFormGenerator.BAL.csproj", "{85B95AB3-A73D-497D-AFDC-7A5AE7D7425F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleFormGenerator.UI", "SampleFormGenerator.UI\SampleFormGenerator.UI.csproj", "{3B804D65-4C25-4E33-8542-CC25D9E82C20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleFormGenerator.Model", "SampleFormGenerator.Model\SampleFormGenerator.Model.csproj", "{ECA94F7D-CBC9-4CA7-A0DF-BA8D0F934F68}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SampleFormGenerator.Database", "SampleFormGenerator.Database\SampleFormGenerator.Database.sqlproj", "{112F9269-4531-4DC1-8F07-E48B32FD3C88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleFormGenerator.DAL", "SampleFormGenerator.DAL\SampleFormGenerator.DAL.csproj", "{9764744F-7D54-41C7-AA40-B1DBA8709CD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleFormGenerator.WebUIMVC", "SampleFormGenerator.WebUIMVC\SampleFormGenerator.WebUIMVC.csproj", "{5D3D3F10-3276-4667-BD92-FA5B028EA3AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleFormGenerator.WebUIMVC.Tests", "SampleFormGenerator.WebUIMVC.Tests\SampleFormGenerator.WebUIMVC.Tests.csproj", "{FDA72053-C515-4F3B-9277-32BF351A082C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleFormGenerator.BAL.Test", "SampleFormGenerator.BAL.Test\SampleFormGenerator.BAL.Test.csproj", "{C47C31F6-63A1-4885-AFBF-B284CBA7555E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,24 +23,36 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FF903891-4469-4474-9228-4EEA284A7B10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF903891-4469-4474-9228-4EEA284A7B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FF903891-4469-4474-9228-4EEA284A7B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FF903891-4469-4474-9228-4EEA284A7B10}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E983A813-C152-42B3-B4B0-D9E25C0893DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E983A813-C152-42B3-B4B0-D9E25C0893DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E983A813-C152-42B3-B4B0-D9E25C0893DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E983A813-C152-42B3-B4B0-D9E25C0893DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B804D65-4C25-4E33-8542-CC25D9E82C20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B804D65-4C25-4E33-8542-CC25D9E82C20}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B804D65-4C25-4E33-8542-CC25D9E82C20}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B804D65-4C25-4E33-8542-CC25D9E82C20}.Release|Any CPU.Build.0 = Release|Any CPU
-		{112F9269-4531-4DC1-8F07-E48B32FD3C88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{112F9269-4531-4DC1-8F07-E48B32FD3C88}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{112F9269-4531-4DC1-8F07-E48B32FD3C88}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{112F9269-4531-4DC1-8F07-E48B32FD3C88}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{112F9269-4531-4DC1-8F07-E48B32FD3C88}.Release|Any CPU.Build.0 = Release|Any CPU
-		{112F9269-4531-4DC1-8F07-E48B32FD3C88}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{23815073-D0BE-4796-8016-F3CC64E8EF86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23815073-D0BE-4796-8016-F3CC64E8EF86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23815073-D0BE-4796-8016-F3CC64E8EF86}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{23815073-D0BE-4796-8016-F3CC64E8EF86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23815073-D0BE-4796-8016-F3CC64E8EF86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23815073-D0BE-4796-8016-F3CC64E8EF86}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{85B95AB3-A73D-497D-AFDC-7A5AE7D7425F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85B95AB3-A73D-497D-AFDC-7A5AE7D7425F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85B95AB3-A73D-497D-AFDC-7A5AE7D7425F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85B95AB3-A73D-497D-AFDC-7A5AE7D7425F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECA94F7D-CBC9-4CA7-A0DF-BA8D0F934F68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECA94F7D-CBC9-4CA7-A0DF-BA8D0F934F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECA94F7D-CBC9-4CA7-A0DF-BA8D0F934F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECA94F7D-CBC9-4CA7-A0DF-BA8D0F934F68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9764744F-7D54-41C7-AA40-B1DBA8709CD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9764744F-7D54-41C7-AA40-B1DBA8709CD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9764744F-7D54-41C7-AA40-B1DBA8709CD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9764744F-7D54-41C7-AA40-B1DBA8709CD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D3D3F10-3276-4667-BD92-FA5B028EA3AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D3D3F10-3276-4667-BD92-FA5B028EA3AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D3D3F10-3276-4667-BD92-FA5B028EA3AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D3D3F10-3276-4667-BD92-FA5B028EA3AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDA72053-C515-4F3B-9277-32BF351A082C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDA72053-C515-4F3B-9277-32BF351A082C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDA72053-C515-4F3B-9277-32BF351A082C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDA72053-C515-4F3B-9277-32BF351A082C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C47C31F6-63A1-4885-AFBF-B284CBA7555E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C47C31F6-63A1-4885-AFBF-B284CBA7555E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C47C31F6-63A1-4885-AFBF-B284CBA7555E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C47C31F6-63A1-4885-AFBF-B284CBA7555E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
