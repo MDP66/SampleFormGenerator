@@ -10,14 +10,19 @@ using SampleFormGenerator.Model.Entities;
 
 namespace SampleFormGenerator.DAL.Repositories
 {
-    public class FormDataRepository : IRepository<TblFormData>
+    public class FormDataRepository :  IRepository<TblFormData>
     {
         private IConnection _connection;
         public FormDataRepository(IConnection connection)
         {
             _connection = connection;
+            Db = _connection.CreateDbConnection();
         }
-        public IDbConnection Db => _connection.CreateDbConnection();
+        public IDbConnection Db { get; set; }
+        public void injectConnection(IDbConnection connection)
+        {
+            Db = connection;
+        }
         public string TableName => "TblFormData";
 
         public async Task<bool> DeleteAsync(TblFormData model)

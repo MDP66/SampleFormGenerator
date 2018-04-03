@@ -11,5 +11,6 @@ namespace SampleFormGenerator.BAL.Contracts
     {
         Task<List<vmForms>> GetAvailableForms();
         Task<List<vmParameters>> GetFormLayoutAsync(int id);
+        Task<vmSaveState> SaveFormAsync(int id, List<vmParameterData> model);
     }
 }

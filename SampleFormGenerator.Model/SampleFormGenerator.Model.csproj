@@ -47,7 +47,9 @@
     <Compile Include="Entities\TblFormValues.cs" />
     <Compile Include="Entities\TblParameterTypes.cs" />
     <Compile Include="ViewModel\vmForms.cs" />
+    <Compile Include="ViewModel\vmParameterData.cs" />
     <Compile Include="ViewModel\vmParameters.cs" />
+    <Compile Include="ViewModel\vmSaveState.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

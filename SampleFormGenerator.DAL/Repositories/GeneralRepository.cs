@@ -8,15 +8,19 @@ using System.Collections.Generic;
 
 namespace SampleFormGenerator.DAL.Repositories
 {
-   public  class GeneralRepository
+   public  class GeneralRepository 
     {
         private IConnection _connection;
         public GeneralRepository(IConnection connection)
         {
             _connection = connection;
+            Db = _connection.CreateDbConnection();
         }
-        public IDbConnection Db => _connection.CreateDbConnection();
-
+        public IDbConnection Db { get; set; }
+        public void injectConnection(IDbConnection connection)
+        {
+            Db = connection;
+        }
         public async Task<IEnumerable<T>> QueryAsync<T>(string query, object conditiontions = null)
         {
             return await Db.QueryAsync<T>(query, conditiontions);

@@ -15,8 +15,13 @@ namespace SampleFormGenerator.DAL.Repositories
         public ParameterTypesRepository(IConnection connection)
         {
             _connection = connection;
+            Db = _connection.CreateDbConnection();
         }
-        public IDbConnection Db => _connection.CreateDbConnection();
+        public IDbConnection Db { get; set; }
+        public void injectConnection(IDbConnection connection)
+        {
+            Db = connection;
+        }
         public string TableName => "TblParameterTypes";
 
         public async Task<bool> DeleteAsync(TblParameterTypes model)

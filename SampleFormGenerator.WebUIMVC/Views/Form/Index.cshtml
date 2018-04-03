@@ -3,7 +3,17 @@
     ViewBag.Title = "Index";
 }
 <form action="@Url.Action("Index","Form")" method="post">
+    <input type="hidden" name="Id" value="@ViewBag.Id" />
     <div class="row">
+        @if(ViewBag.Error != null)
+        {
+            <div class="col-12">
+                <div class="alert alert-error" role="alert">
+                    @ViewBag.Error
+                </div>
+            </div>
+            <hr />
+        }
         @foreach (var item in Model)
         {
             <div class="col-6">

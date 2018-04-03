@@ -14,8 +14,13 @@ namespace SampleFormGenerator.DAL.Repositories
         public FormValuesRepository(IConnection connection)
         {
             _connection = connection;
+            Db = _connection.CreateDbConnection();
         }
-        public IDbConnection Db => _connection.CreateDbConnection();
+        public IDbConnection Db { get; set; }
+        public void injectConnection(IDbConnection connection)
+        {
+            Db = connection;
+        }
         public string TableName => "TblFormValues";
 
         public async Task<bool> DeleteAsync(TblFormValues model)

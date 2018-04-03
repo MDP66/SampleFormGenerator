@@ -6,7 +6,8 @@ namespace SampleFormGenerator.Model.Contracts
 {
     public interface IRepository<T> where T : IEntity
     {
-        IDbConnection Db { get; }
+        void injectConnection(IDbConnection connection);
+        IDbConnection Db { get; set; }
         string TableName { get; }
         Task<T> SaveAsync(T model);
         Task<T> UpdateAsync(T model);
