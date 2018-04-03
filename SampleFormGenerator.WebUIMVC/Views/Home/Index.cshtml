@@ -23,8 +23,8 @@
                         <h4 class="my-0 font-weight-normal">@item.FormTitle</h4>
                     </div>
                     <div class="card-body">
-                        <a href="@Url.Action("index", "Form", new { id = item.FormId })/@item.FormTitle.PrepareForUI()" class="btn btn-lg btn-outline-primary">پر کردن فرم</a>
-                        <a href="@Url.Action("index", "Form", new { id = item.FormId })/@item.FormTitle.PrepareForUI()" class="btn btn-lg btn-outline-success">سوابق ورود اطلاعات</a>
+                        <a href="/form/@item.FormId/@item.FormTitle.PrepareForUI()" class="btn btn-lg btn-outline-primary">پر کردن فرم</a>
+                        <a href="/form/history/@item.FormId/@item.FormTitle.PrepareForUI()" class="btn btn-lg btn-outline-success">سوابق ورود اطلاعات</a>
                     </div>
                 </div>
                 }
