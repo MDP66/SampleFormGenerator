@@ -1,0 +1,7 @@
+﻿@model vmParameterData
+<label class="label" for="param-@Model.Id">@Model.ParamterTitle</label>
+<input type="hidden" name="model[@Model.ParameterOrder].RegexValidator" value="@Model.RegexValidator" />
+<input type="hidden" name="model[@Model.ParameterOrder].Id" value="@Model.Id" />
+<input type="hidden" name="model[@Model.ParameterOrder].TypeId" value="@Model.TypeId" />
+<input type="hidden" name="model[@Model.ParameterOrder].Type" value="@Model.Type" />
+<input readonly id="param-@Model.Id" type="text" value="@Model.Value" class="form-control pdate" @(Model.IsMandotory ? "required" : "") @(String.IsNullOrEmpty(Model.RegexValidator) ? "" : "pattern=" + Model.RegexValidator) />
