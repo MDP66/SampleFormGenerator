@@ -22,12 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.PopperUtils = {})));
-}(this, (function (exports) { 'use strict';
-
 /**
  * Get CSS computed property of the given element
  * @method
@@ -40,7 +34,7 @@ function getStyleComputedProperty(element, property) {
     return [];
   }
   // NOTE: 1 DOM access here
-  var css = getComputedStyle(element, null);
+  const css = getComputedStyle(element, null);
   return property ? css[property] : css;
 }
 
@@ -80,12 +74,7 @@ function getScrollParent(element) {
   }
 
   // Firefox want us to check `-x` and `-y` variations as well
-
-  var _getStyleComputedProp = getStyleComputedProperty(element),
-      overflow = _getStyleComputedProp.overflow,
-      overflowX = _getStyleComputedProp.overflowX,
-      overflowY = _getStyleComputedProp.overflowY;
-
+  const { overflow, overflowX, overflowY } = getStyleComputedProperty(element);
   if (/(auto|scroll|overlay)/.test(overflow + overflowY + overflowX)) {
     return element;
   }
@@ -100,11 +89,9 @@ function getScrollParent(element) {
  * @argument {number} version to check
  * @returns {Boolean} isIE
  */
-var cache = {};
+const cache = {};
 
-var isIE = function () {
-  var version = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'all';
-
+var isIE = function (version = 'all') {
   version = version.toString();
   if (cache.hasOwnProperty(version)) {
     return cache[version];
@@ -122,9 +109,7 @@ var isIE = function () {
   }
 
   //Set IE
-  cache.all = cache.all || Object.keys(cache).some(function (key) {
-    return cache[key];
-  });
+  cache.all = cache.all || Object.keys(cache).some(key => cache[key]);
   return cache[version];
 };
 
@@ -140,16 +125,16 @@ function getOffsetParent(element) {
     return document.documentElement;
   }
 
-  var noOffsetParent = isIE(10) ? document.body : null;
+  const noOffsetParent = isIE(10) ? document.body : null;
 
   // NOTE: 1 DOM access here
-  var offsetParent = element.offsetParent;
+  let offsetParent = element.offsetParent;
   // Skip hidden elements which don't have an offsetParent
   while (offsetParent === noOffsetParent && element.nextElementSibling) {
     offsetParent = (element = element.nextElementSibling).offsetParent;
   }
 
-  var nodeName = offsetParent && offsetParent.nodeName;
+  const nodeName = offsetParent && offsetParent.nodeName;
 
   if (!nodeName || nodeName === 'BODY' || nodeName === 'HTML') {
     return element ? element.ownerDocument.documentElement : document.documentElement;
@@ -165,8 +150,7 @@ function getOffsetParent(element) {
 }
 
 function isOffsetContainer(element) {
-  var nodeName = element.nodeName;
-
+  const { nodeName } = element;
   if (nodeName === 'BODY') {
     return false;
   }
@@ -203,18 +187,17 @@ function findCommonOffsetParent(element1, element2) {
   }
 
   // Here we make sure to give as "start" the element that comes first in the DOM
-  var order = element1.compareDocumentPosition(element2) & Node.DOCUMENT_POSITION_FOLLOWING;
-  var start = order ? element1 : element2;
-  var end = order ? element2 : element1;
+  const order = element1.compareDocumentPosition(element2) & Node.DOCUMENT_POSITION_FOLLOWING;
+  const start = order ? element1 : element2;
+  const end = order ? element2 : element1;
 
   // Get common ancestor container
-  var range = document.createRange();
+  const range = document.createRange();
   range.setStart(start, 0);
   range.setEnd(end, 0);
-  var commonAncestorContainer = range.commonAncestorContainer;
+  const { commonAncestorContainer } = range;
 
   // Both nodes are inside #document
-
   if (element1 !== commonAncestorContainer && element2 !== commonAncestorContainer || start.contains(end)) {
     if (isOffsetContainer(commonAncestorContainer)) {
       return commonAncestorContainer;
@@ -224,7 +207,7 @@ function findCommonOffsetParent(element1, element2) {
   }
 
   // one of the nodes is inside shadowDOM, find which one
-  var element1root = getRoot(element1);
+  const element1root = getRoot(element1);
   if (element1root.host) {
     return findCommonOffsetParent(element1root.host, element2);
   } else {
@@ -240,15 +223,13 @@ function findCommonOffsetParent(element1, element2) {
  * @argument {String} side `top` or `left`
  * @returns {number} amount of scrolled pixels
  */
-function getScroll(element) {
-  var side = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'top';
-
-  var upperSide = side === 'top' ? 'scrollTop' : 'scrollLeft';
-  var nodeName = element.nodeName;
+function getScroll(element, side = 'top') {
+  const upperSide = side === 'top' ? 'scrollTop' : 'scrollLeft';
+  const nodeName = element.nodeName;
 
   if (nodeName === 'BODY' || nodeName === 'HTML') {
-    var html = element.ownerDocument.documentElement;
-    var scrollingElement = element.ownerDocument.scrollingElement || html;
+    const html = element.ownerDocument.documentElement;
+    const scrollingElement = element.ownerDocument.scrollingElement || html;
     return scrollingElement[upperSide];
   }
 
@@ -264,12 +245,10 @@ function getScroll(element) {
  * @param {Boolean} subtract - set to true if you want to subtract the scroll values
  * @return {Object} rect - The modifier rect object
  */
-function includeScroll(rect, element) {
-  var subtract = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-  var scrollTop = getScroll(element, 'top');
-  var scrollLeft = getScroll(element, 'left');
-  var modifier = subtract ? -1 : 1;
+function includeScroll(rect, element, subtract = false) {
+  const scrollTop = getScroll(element, 'top');
+  const scrollLeft = getScroll(element, 'left');
+  const modifier = subtract ? -1 : 1;
   rect.top += scrollTop * modifier;
   rect.bottom += scrollTop * modifier;
   rect.left += scrollLeft * modifier;
@@ -288,20 +267,20 @@ function includeScroll(rect, element) {
  */
 
 function getBordersSize(styles, axis) {
-  var sideA = axis === 'x' ? 'Left' : 'Top';
-  var sideB = sideA === 'Left' ? 'Right' : 'Bottom';
+  const sideA = axis === 'x' ? 'Left' : 'Top';
+  const sideB = sideA === 'Left' ? 'Right' : 'Bottom';
 
-  return parseFloat(styles['border' + sideA + 'Width'], 10) + parseFloat(styles['border' + sideB + 'Width'], 10);
+  return parseFloat(styles[`border${sideA}Width`], 10) + parseFloat(styles[`border${sideB}Width`], 10);
 }
 
 function getSize(axis, body, html, computedStyle) {
-  return Math.max(body['offset' + axis], body['scroll' + axis], html['client' + axis], html['offset' + axis], html['scroll' + axis], isIE(10) ? html['offset' + axis] + computedStyle['margin' + (axis === 'Height' ? 'Top' : 'Left')] + computedStyle['margin' + (axis === 'Height' ? 'Bottom' : 'Right')] : 0);
+  return Math.max(body[`offset${axis}`], body[`scroll${axis}`], html[`client${axis}`], html[`offset${axis}`], html[`scroll${axis}`], isIE(10) ? html[`offset${axis}`] + computedStyle[`margin${axis === 'Height' ? 'Top' : 'Left'}`] + computedStyle[`margin${axis === 'Height' ? 'Bottom' : 'Right'}`] : 0);
 }
 
 function getWindowSizes() {
-  var body = document.body;
-  var html = document.documentElement;
-  var computedStyle = isIE(10) && getComputedStyle(html);
+  const body = document.body;
+  const html = document.documentElement;
+  const computedStyle = isIE(10) && getComputedStyle(html);
 
   return {
     height: getSize('Height', body, html, computedStyle),
@@ -345,7 +324,7 @@ function getClientRect(offsets) {
  * @return {Object} client rect
  */
 function getBoundingClientRect(element) {
-  var rect = {};
+  let rect = {};
 
   // IE10 10 FIX: Please, don't ask, the element isn't
   // considered in DOM in some circumstances...
@@ -353,8 +332,8 @@ function getBoundingClientRect(element) {
   try {
     if (isIE(10)) {
       rect = element.getBoundingClientRect();
-      var scrollTop = getScroll(element, 'top');
-      var scrollLeft = getScroll(element, 'left');
+      const scrollTop = getScroll(element, 'top');
+      const scrollLeft = getScroll(element, 'left');
       rect.top += scrollTop;
       rect.left += scrollLeft;
       rect.bottom += scrollTop;
@@ -364,7 +343,7 @@ function getBoundingClientRect(element) {
     }
   } catch (e) {}
 
-  var result = {
+  const result = {
     left: rect.left,
     top: rect.top,
     width: rect.right - rect.left,
@@ -372,17 +351,17 @@ function getBoundingClientRect(element) {
   };
 
   // subtract scrollbar size from sizes
-  var sizes = element.nodeName === 'HTML' ? getWindowSizes() : {};
-  var width = sizes.width || element.clientWidth || result.right - result.left;
-  var height = sizes.height || element.clientHeight || result.bottom - result.top;
+  const sizes = element.nodeName === 'HTML' ? getWindowSizes() : {};
+  const width = sizes.width || element.clientWidth || result.right - result.left;
+  const height = sizes.height || element.clientHeight || result.bottom - result.top;
 
-  var horizScrollbar = element.offsetWidth - width;
-  var vertScrollbar = element.offsetHeight - height;
+  let horizScrollbar = element.offsetWidth - width;
+  let vertScrollbar = element.offsetHeight - height;
 
   // if an hypothetical scrollbar is detected, we must be sure it's not a `border`
   // we make this check conditional for performance reasons
   if (horizScrollbar || vertScrollbar) {
-    var styles = getStyleComputedProperty(element);
+    const styles = getStyleComputedProperty(element);
     horizScrollbar -= getBordersSize(styles, 'x');
     vertScrollbar -= getBordersSize(styles, 'y');
 
@@ -393,25 +372,23 @@ function getBoundingClientRect(element) {
   return getClientRect(result);
 }
 
-function getOffsetRectRelativeToArbitraryNode(children, parent) {
-  var fixedPosition = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+function getOffsetRectRelativeToArbitraryNode(children, parent, fixedPosition = false) {
+  const isIE10 = isIE(10);
+  const isHTML = parent.nodeName === 'HTML';
+  const childrenRect = getBoundingClientRect(children);
+  const parentRect = getBoundingClientRect(parent);
+  const scrollParent = getScrollParent(children);
 
-  var isIE10 = isIE(10);
-  var isHTML = parent.nodeName === 'HTML';
-  var childrenRect = getBoundingClientRect(children);
-  var parentRect = getBoundingClientRect(parent);
-  var scrollParent = getScrollParent(children);
-
-  var styles = getStyleComputedProperty(parent);
-  var borderTopWidth = parseFloat(styles.borderTopWidth, 10);
-  var borderLeftWidth = parseFloat(styles.borderLeftWidth, 10);
+  const styles = getStyleComputedProperty(parent);
+  const borderTopWidth = parseFloat(styles.borderTopWidth, 10);
+  const borderLeftWidth = parseFloat(styles.borderLeftWidth, 10);
 
   // In cases where the parent is fixed, we must ignore negative scroll in offset calc
   if (fixedPosition && parent.nodeName === 'HTML') {
     parentRect.top = Math.max(parentRect.top, 0);
     parentRect.left = Math.max(parentRect.left, 0);
   }
-  var offsets = getClientRect({
+  let offsets = getClientRect({
     top: childrenRect.top - parentRect.top - borderTopWidth,
     left: childrenRect.left - parentRect.left - borderLeftWidth,
     width: childrenRect.width,
@@ -425,8 +402,8 @@ function getOffsetRectRelativeToArbitraryNode(children, parent) {
   // differently when margins are applied to it. The margins are included in
   // the box of the documentElement, in the other cases not.
   if (!isIE10 && isHTML) {
-    var marginTop = parseFloat(styles.marginTop, 10);
-    var marginLeft = parseFloat(styles.marginLeft, 10);
+    const marginTop = parseFloat(styles.marginTop, 10);
+    const marginLeft = parseFloat(styles.marginLeft, 10);
 
     offsets.top -= borderTopWidth - marginTop;
     offsets.bottom -= borderTopWidth - marginTop;
@@ -445,22 +422,20 @@ function getOffsetRectRelativeToArbitraryNode(children, parent) {
   return offsets;
 }
 
-function getViewportOffsetRectRelativeToArtbitraryNode(element) {
-  var excludeScroll = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+function getViewportOffsetRectRelativeToArtbitraryNode(element, excludeScroll = false) {
+  const html = element.ownerDocument.documentElement;
+  const relativeOffset = getOffsetRectRelativeToArbitraryNode(element, html);
+  const width = Math.max(html.clientWidth, window.innerWidth || 0);
+  const height = Math.max(html.clientHeight, window.innerHeight || 0);
 
-  var html = element.ownerDocument.documentElement;
-  var relativeOffset = getOffsetRectRelativeToArbitraryNode(element, html);
-  var width = Math.max(html.clientWidth, window.innerWidth || 0);
-  var height = Math.max(html.clientHeight, window.innerHeight || 0);
+  const scrollTop = !excludeScroll ? getScroll(html) : 0;
+  const scrollLeft = !excludeScroll ? getScroll(html, 'left') : 0;
 
-  var scrollTop = !excludeScroll ? getScroll(html) : 0;
-  var scrollLeft = !excludeScroll ? getScroll(html, 'left') : 0;
-
-  var offset = {
+  const offset = {
     top: scrollTop - relativeOffset.top + relativeOffset.marginTop,
     left: scrollLeft - relativeOffset.left + relativeOffset.marginLeft,
-    width: width,
-    height: height
+    width,
+    height
   };
 
   return getClientRect(offset);
@@ -475,7 +450,7 @@ function getViewportOffsetRectRelativeToArtbitraryNode(element) {
  * @returns {Boolean} answer to "isFixed?"
  */
 function isFixed(element) {
-  var nodeName = element.nodeName;
+  const nodeName = element.nodeName;
   if (nodeName === 'BODY' || nodeName === 'HTML') {
     return false;
   }
@@ -498,7 +473,7 @@ function getFixedPositionOffsetParent(element) {
   if (!element || !element.parentElement || isIE()) {
     return document.documentElement;
   }
-  var el = element.parentElement;
+  let el = element.parentElement;
   while (el && getStyleComputedProperty(el, 'transform') === 'none') {
     el = el.parentElement;
   }
@@ -516,20 +491,18 @@ function getFixedPositionOffsetParent(element) {
  * @param {Boolean} fixedPosition - Is in fixed position mode
  * @returns {Object} Coordinates of the boundaries
  */
-function getBoundaries(popper, reference, padding, boundariesElement) {
-  var fixedPosition = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
-
+function getBoundaries(popper, reference, padding, boundariesElement, fixedPosition = false) {
   // NOTE: 1 DOM access here
 
-  var boundaries = { top: 0, left: 0 };
-  var offsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, reference);
+  let boundaries = { top: 0, left: 0 };
+  const offsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, reference);
 
   // Handle viewport case
   if (boundariesElement === 'viewport') {
     boundaries = getViewportOffsetRectRelativeToArtbitraryNode(offsetParent, fixedPosition);
   } else {
     // Handle other cases based on DOM element used as boundaries
-    var boundariesNode = void 0;
+    let boundariesNode;
     if (boundariesElement === 'scrollParent') {
       boundariesNode = getScrollParent(getParentNode(reference));
       if (boundariesNode.nodeName === 'BODY') {
@@ -541,14 +514,11 @@ function getBoundaries(popper, reference, padding, boundariesElement) {
       boundariesNode = boundariesElement;
     }
 
-    var offsets = getOffsetRectRelativeToArbitraryNode(boundariesNode, offsetParent, fixedPosition);
+    const offsets = getOffsetRectRelativeToArbitraryNode(boundariesNode, offsetParent, fixedPosition);
 
     // In case of HTML, we need a different computation
     if (boundariesNode.nodeName === 'HTML' && !isFixed(offsetParent)) {
-      var _getWindowSizes = getWindowSizes(),
-          height = _getWindowSizes.height,
-          width = _getWindowSizes.width;
-
+      const { height, width } = getWindowSizes();
       boundaries.top += offsets.top - offsets.marginTop;
       boundaries.bottom = height + offsets.top;
       boundaries.left += offsets.left - offsets.marginLeft;
@@ -568,10 +538,7 @@ function getBoundaries(popper, reference, padding, boundariesElement) {
   return boundaries;
 }
 
-function getArea(_ref) {
-  var width = _ref.width,
-      height = _ref.height;
-
+function getArea({ width, height }) {
   return width * height;
 }
 
@@ -584,16 +551,14 @@ function getArea(_ref) {
  * @argument {Object} options - Modifiers configuration and options
  * @returns {Object} The data object, properly modified
  */
-function computeAutoPlacement(placement, refRect, popper, reference, boundariesElement) {
-  var padding = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
-
+function computeAutoPlacement(placement, refRect, popper, reference, boundariesElement, padding = 0) {
   if (placement.indexOf('auto') === -1) {
     return placement;
   }
 
-  var boundaries = getBoundaries(popper, reference, padding, boundariesElement);
+  const boundaries = getBoundaries(popper, reference, padding, boundariesElement);
 
-  var rects = {
+  const rects = {
     top: {
       width: boundaries.width,
       height: refRect.top - boundaries.top
@@ -612,33 +577,25 @@ function computeAutoPlacement(placement, refRect, popper, reference, boundariesE
     }
   };
 
-  var sortedAreas = Object.keys(rects).map(function (key) {
-    return _extends({
-      key: key
-    }, rects[key], {
-      area: getArea(rects[key])
-    });
-  }).sort(function (a, b) {
-    return b.area - a.area;
-  });
+  const sortedAreas = Object.keys(rects).map(key => _extends({
+    key
+  }, rects[key], {
+    area: getArea(rects[key])
+  })).sort((a, b) => b.area - a.area);
 
-  var filteredAreas = sortedAreas.filter(function (_ref2) {
-    var width = _ref2.width,
-        height = _ref2.height;
-    return width >= popper.clientWidth && height >= popper.clientHeight;
-  });
+  const filteredAreas = sortedAreas.filter(({ width, height }) => width >= popper.clientWidth && height >= popper.clientHeight);
 
-  var computedPlacement = filteredAreas.length > 0 ? filteredAreas[0].key : sortedAreas[0].key;
+  const computedPlacement = filteredAreas.length > 0 ? filteredAreas[0].key : sortedAreas[0].key;
 
-  var variation = placement.split('-')[1];
+  const variation = placement.split('-')[1];
 
-  return computedPlacement + (variation ? '-' + variation : '');
+  return computedPlacement + (variation ? `-${variation}` : '');
 }
 
-var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
-var longerTimeoutBrowsers = ['Edge', 'Trident', 'Firefox'];
-var timeoutDuration = 0;
-for (var i = 0; i < longerTimeoutBrowsers.length; i += 1) {
+const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
+const longerTimeoutBrowsers = ['Edge', 'Trident', 'Firefox'];
+let timeoutDuration = 0;
+for (let i = 0; i < longerTimeoutBrowsers.length; i += 1) {
   if (isBrowser && navigator.userAgent.indexOf(longerTimeoutBrowsers[i]) >= 0) {
     timeoutDuration = 1;
     break;
@@ -646,13 +603,13 @@ for (var i = 0; i < longerTimeoutBrowsers.length; i += 1) {
 }
 
 function microtaskDebounce(fn) {
-  var called = false;
-  return function () {
+  let called = false;
+  return () => {
     if (called) {
       return;
     }
     called = true;
-    window.Promise.resolve().then(function () {
+    window.Promise.resolve().then(() => {
       called = false;
       fn();
     });
@@ -660,11 +617,11 @@ function microtaskDebounce(fn) {
 }
 
 function taskDebounce(fn) {
-  var scheduled = false;
-  return function () {
+  let scheduled = false;
+  return () => {
     if (!scheduled) {
       scheduled = true;
-      setTimeout(function () {
+      setTimeout(() => {
         scheduled = false;
         fn();
       }, timeoutDuration);
@@ -672,7 +629,7 @@ function taskDebounce(fn) {
   };
 }
 
-var supportsMicroTasks = isBrowser && window.Promise;
+const supportsMicroTasks = isBrowser && window.Promise;
 
 /**
 * Create a debounced version of a method, that's asynchronously deferred
@@ -716,15 +673,11 @@ function find(arr, check) {
 function findIndex(arr, prop, value) {
   // use native findIndex if supported
   if (Array.prototype.findIndex) {
-    return arr.findIndex(function (cur) {
-      return cur[prop] === value;
-    });
+    return arr.findIndex(cur => cur[prop] === value);
   }
 
   // use `find` + `indexOf` if `findIndex` isn't supported
-  var match = find(arr, function (obj) {
-    return obj[prop] === value;
-  });
+  const match = find(arr, obj => obj[prop] === value);
   return arr.indexOf(match);
 }
 
@@ -736,15 +689,12 @@ function findIndex(arr, prop, value) {
  * @return {Object} position - Coordinates of the element and its `scrollTop`
  */
 function getOffsetRect(element) {
-  var elementRect = void 0;
+  let elementRect;
   if (element.nodeName === 'HTML') {
-    var _getWindowSizes = getWindowSizes(),
-        width = _getWindowSizes.width,
-        height = _getWindowSizes.height;
-
+    const { width, height } = getWindowSizes();
     elementRect = {
-      width: width,
-      height: height,
+      width,
+      height,
       left: 0,
       top: 0
     };
@@ -769,10 +719,10 @@ function getOffsetRect(element) {
  * @returns {Object} object containing width and height properties
  */
 function getOuterSizes(element) {
-  var styles = getComputedStyle(element);
-  var x = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
-  var y = parseFloat(styles.marginLeft) + parseFloat(styles.marginRight);
-  var result = {
+  const styles = getComputedStyle(element);
+  const x = parseFloat(styles.marginTop) + parseFloat(styles.marginBottom);
+  const y = parseFloat(styles.marginLeft) + parseFloat(styles.marginRight);
+  const result = {
     width: element.offsetWidth + y,
     height: element.offsetHeight + x
   };
@@ -787,10 +737,8 @@ function getOuterSizes(element) {
  * @returns {String} flipped placement
  */
 function getOppositePlacement(placement) {
-  var hash = { left: 'right', right: 'left', bottom: 'top', top: 'bottom' };
-  return placement.replace(/left|right|bottom|top/g, function (matched) {
-    return hash[matched];
-  });
+  const hash = { left: 'right', right: 'left', bottom: 'top', top: 'bottom' };
+  return placement.replace(/left|right|bottom|top/g, matched => hash[matched]);
 }
 
 /**
@@ -807,20 +755,20 @@ function getPopperOffsets(popper, referenceOffsets, placement) {
   placement = placement.split('-')[0];
 
   // Get popper node sizes
-  var popperRect = getOuterSizes(popper);
+  const popperRect = getOuterSizes(popper);
 
   // Add position, width and height to our offsets object
-  var popperOffsets = {
+  const popperOffsets = {
     width: popperRect.width,
     height: popperRect.height
   };
 
   // depending by the popper placement we have to compute its offsets slightly differently
-  var isHoriz = ['right', 'left'].indexOf(placement) !== -1;
-  var mainSide = isHoriz ? 'top' : 'left';
-  var secondarySide = isHoriz ? 'left' : 'top';
-  var measurement = isHoriz ? 'height' : 'width';
-  var secondaryMeasurement = !isHoriz ? 'height' : 'width';
+  const isHoriz = ['right', 'left'].indexOf(placement) !== -1;
+  const mainSide = isHoriz ? 'top' : 'left';
+  const secondarySide = isHoriz ? 'left' : 'top';
+  const measurement = isHoriz ? 'height' : 'width';
+  const secondaryMeasurement = !isHoriz ? 'height' : 'width';
 
   popperOffsets[mainSide] = referenceOffsets[mainSide] + referenceOffsets[measurement] / 2 - popperRect[measurement] / 2;
   if (placement === secondarySide) {
@@ -842,10 +790,8 @@ function getPopperOffsets(popper, referenceOffsets, placement) {
  * @param {Element} fixedPosition - is in fixed position mode
  * @returns {Object} An object containing the offsets which will be applied to the popper
  */
-function getReferenceOffsets(state, popper, reference) {
-  var fixedPosition = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-
-  var commonOffsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, reference);
+function getReferenceOffsets(state, popper, reference, fixedPosition = null) {
+  const commonOffsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, reference);
   return getOffsetRectRelativeToArbitraryNode(reference, commonOffsetParent, fixedPosition);
 }
 
@@ -857,12 +803,12 @@ function getReferenceOffsets(state, popper, reference) {
  * @returns {String} prefixed property (camelCase or PascalCase, depending on the vendor prefix)
  */
 function getSupportedPropertyName(property) {
-  var prefixes = [false, 'ms', 'Webkit', 'Moz', 'O'];
-  var upperProp = property.charAt(0).toUpperCase() + property.slice(1);
+  const prefixes = [false, 'ms', 'Webkit', 'Moz', 'O'];
+  const upperProp = property.charAt(0).toUpperCase() + property.slice(1);
 
-  for (var i = 0; i < prefixes.length; i++) {
-    var prefix = prefixes[i];
-    var toCheck = prefix ? '' + prefix + upperProp : property;
+  for (let i = 0; i < prefixes.length; i++) {
+    const prefix = prefixes[i];
+    const toCheck = prefix ? `${prefix}${upperProp}` : property;
     if (typeof document.body.style[toCheck] !== 'undefined') {
       return toCheck;
     }
@@ -878,7 +824,7 @@ function getSupportedPropertyName(property) {
  * @returns {Boolean} answer to: is a function?
  */
 function isFunction(functionToCheck) {
-  var getType = {};
+  const getType = {};
   return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
 }
 
@@ -889,11 +835,7 @@ function isFunction(functionToCheck) {
  * @returns {Boolean}
  */
 function isModifierEnabled(modifiers, modifierName) {
-  return modifiers.some(function (_ref) {
-    var name = _ref.name,
-        enabled = _ref.enabled;
-    return enabled && name === modifierName;
-  });
+  return modifiers.some(({ name, enabled }) => enabled && name === modifierName);
 }
 
 /**
@@ -907,19 +849,16 @@ function isModifierEnabled(modifiers, modifierName) {
  * @returns {Boolean}
  */
 function isModifierRequired(modifiers, requestingName, requestedName) {
-  var requesting = find(modifiers, function (_ref) {
-    var name = _ref.name;
-    return name === requestingName;
-  });
+  const requesting = find(modifiers, ({ name }) => name === requestingName);
 
-  var isRequired = !!requesting && modifiers.some(function (modifier) {
+  const isRequired = !!requesting && modifiers.some(modifier => {
     return modifier.name === requestedName && modifier.enabled && modifier.order < requesting.order;
   });
 
   if (!isRequired) {
-    var _requesting = '`' + requestingName + '`';
-    var requested = '`' + requestedName + '`';
-    console.warn(requested + ' modifier is required by ' + _requesting + ' modifier in order to work, be sure to include it before ' + _requesting + '!');
+    const requesting = `\`${requestingName}\``;
+    const requested = `\`${requestedName}\``;
+    console.warn(`${requested} modifier is required by ${requesting} modifier in order to work, be sure to include it before ${requesting}!`);
   }
   return isRequired;
 }
@@ -941,7 +880,7 @@ function isNumeric(n) {
  * @returns {Window}
  */
 function getWindow(element) {
-  var ownerDocument = element.ownerDocument;
+  const ownerDocument = element.ownerDocument;
   return ownerDocument ? ownerDocument.defaultView : window;
 }
 
@@ -956,7 +895,7 @@ function removeEventListeners(reference, state) {
   getWindow(reference).removeEventListener('resize', state.updateBound);
 
   // Remove scroll event listener on scroll parents
-  state.scrollParents.forEach(function (target) {
+  state.scrollParents.forEach(target => {
     target.removeEventListener('scroll', state.updateBound);
   });
 
@@ -979,14 +918,14 @@ function removeEventListeners(reference, state) {
  * @returns {dataObject}
  */
 function runModifiers(modifiers, data, ends) {
-  var modifiersToRun = ends === undefined ? modifiers : modifiers.slice(0, findIndex(modifiers, 'name', ends));
+  const modifiersToRun = ends === undefined ? modifiers : modifiers.slice(0, findIndex(modifiers, 'name', ends));
 
-  modifiersToRun.forEach(function (modifier) {
+  modifiersToRun.forEach(modifier => {
     if (modifier['function']) {
       // eslint-disable-line dot-notation
       console.warn('`modifier.function` is deprecated, use `modifier.fn`!');
     }
-    var fn = modifier['function'] || modifier.fn; // eslint-disable-line dot-notation
+    const fn = modifier['function'] || modifier.fn; // eslint-disable-line dot-notation
     if (modifier.enabled && isFunction(fn)) {
       // Add properties to offsets to make them a complete clientRect object
       // we do this before each modifier to make sure the previous one doesn't
@@ -1011,7 +950,7 @@ function runModifiers(modifiers, data, ends) {
  */
 function setAttributes(element, attributes) {
   Object.keys(attributes).forEach(function (prop) {
-    var value = attributes[prop];
+    const value = attributes[prop];
     if (value !== false) {
       element.setAttribute(prop, attributes[prop]);
     } else {
@@ -1029,8 +968,8 @@ function setAttributes(element, attributes) {
  * Object with a list of properties and values which will be applied to the element
  */
 function setStyles(element, styles) {
-  Object.keys(styles).forEach(function (prop) {
-    var unit = '';
+  Object.keys(styles).forEach(prop => {
+    let unit = '';
     // add unit if the value is numeric and is one of the following
     if (['width', 'height', 'top', 'right', 'bottom', 'left'].indexOf(prop) !== -1 && isNumeric(styles[prop])) {
       unit = 'px';
@@ -1040,8 +979,8 @@ function setStyles(element, styles) {
 }
 
 function attachToScrollParents(scrollParent, event, callback, scrollParents) {
-  var isBody = scrollParent.nodeName === 'BODY';
-  var target = isBody ? scrollParent.ownerDocument.defaultView : scrollParent;
+  const isBody = scrollParent.nodeName === 'BODY';
+  const target = isBody ? scrollParent.ownerDocument.defaultView : scrollParent;
   target.addEventListener(event, callback, { passive: true });
 
   if (!isBody) {
@@ -1062,7 +1001,7 @@ function setupEventListeners(reference, options, state, updateBound) {
   getWindow(reference).addEventListener('resize', state.updateBound, { passive: true });
 
   // Scroll event listener on scroll parents
-  var scrollElement = getScrollParent(reference);
+  const scrollElement = getScrollParent(reference);
   attachToScrollParents(scrollElement, 'scroll', state.updateBound, state.scrollParents);
   state.scrollElement = scrollElement;
   state.eventsEnabled = true;
@@ -1077,69 +1016,37 @@ function setupEventListeners(reference, options, state, updateBound) {
 // ```
 // The default export will be removed in the next major version.
 var index = {
-  computeAutoPlacement: computeAutoPlacement,
-  debounce: debounce,
-  findIndex: findIndex,
-  getBordersSize: getBordersSize,
-  getBoundaries: getBoundaries,
-  getBoundingClientRect: getBoundingClientRect,
-  getClientRect: getClientRect,
-  getOffsetParent: getOffsetParent,
-  getOffsetRect: getOffsetRect,
-  getOffsetRectRelativeToArbitraryNode: getOffsetRectRelativeToArbitraryNode,
-  getOuterSizes: getOuterSizes,
-  getParentNode: getParentNode,
-  getPopperOffsets: getPopperOffsets,
-  getReferenceOffsets: getReferenceOffsets,
-  getScroll: getScroll,
-  getScrollParent: getScrollParent,
-  getStyleComputedProperty: getStyleComputedProperty,
-  getSupportedPropertyName: getSupportedPropertyName,
-  getWindowSizes: getWindowSizes,
-  isFixed: isFixed,
-  isFunction: isFunction,
-  isModifierEnabled: isModifierEnabled,
-  isModifierRequired: isModifierRequired,
-  isNumeric: isNumeric,
-  removeEventListeners: removeEventListeners,
-  runModifiers: runModifiers,
-  setAttributes: setAttributes,
-  setStyles: setStyles,
-  setupEventListeners: setupEventListeners
+  computeAutoPlacement,
+  debounce,
+  findIndex,
+  getBordersSize,
+  getBoundaries,
+  getBoundingClientRect,
+  getClientRect,
+  getOffsetParent,
+  getOffsetRect,
+  getOffsetRectRelativeToArbitraryNode,
+  getOuterSizes,
+  getParentNode,
+  getPopperOffsets,
+  getReferenceOffsets,
+  getScroll,
+  getScrollParent,
+  getStyleComputedProperty,
+  getSupportedPropertyName,
+  getWindowSizes,
+  isFixed,
+  isFunction,
+  isModifierEnabled,
+  isModifierRequired,
+  isNumeric,
+  removeEventListeners,
+  runModifiers,
+  setAttributes,
+  setStyles,
+  setupEventListeners
 };
 
-exports.computeAutoPlacement = computeAutoPlacement;
-exports.debounce = debounce;
-exports.findIndex = findIndex;
-exports.getBordersSize = getBordersSize;
-exports.getBoundaries = getBoundaries;
-exports.getBoundingClientRect = getBoundingClientRect;
-exports.getClientRect = getClientRect;
-exports.getOffsetParent = getOffsetParent;
-exports.getOffsetRect = getOffsetRect;
-exports.getOffsetRectRelativeToArbitraryNode = getOffsetRectRelativeToArbitraryNode;
-exports.getOuterSizes = getOuterSizes;
-exports.getParentNode = getParentNode;
-exports.getPopperOffsets = getPopperOffsets;
-exports.getReferenceOffsets = getReferenceOffsets;
-exports.getScroll = getScroll;
-exports.getScrollParent = getScrollParent;
-exports.getStyleComputedProperty = getStyleComputedProperty;
-exports.getSupportedPropertyName = getSupportedPropertyName;
-exports.getWindowSizes = getWindowSizes;
-exports.isFixed = isFixed;
-exports.isFunction = isFunction;
-exports.isModifierEnabled = isModifierEnabled;
-exports.isModifierRequired = isModifierRequired;
-exports.isNumeric = isNumeric;
-exports.removeEventListeners = removeEventListeners;
-exports.runModifiers = runModifiers;
-exports.setAttributes = setAttributes;
-exports.setStyles = setStyles;
-exports.setupEventListeners = setupEventListeners;
-exports['default'] = index;
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
+export { computeAutoPlacement, debounce, findIndex, getBordersSize, getBoundaries, getBoundingClientRect, getClientRect, getOffsetParent, getOffsetRect, getOffsetRectRelativeToArbitraryNode, getOuterSizes, getParentNode, getPopperOffsets, getReferenceOffsets, getScroll, getScrollParent, getStyleComputedProperty, getSupportedPropertyName, getWindowSizes, isFixed, isFunction, isModifierEnabled, isModifierRequired, isNumeric, removeEventListeners, runModifiers, setAttributes, setStyles, setupEventListeners };
+export default index;
 //# sourceMappingURL=popper-utils.js.map
