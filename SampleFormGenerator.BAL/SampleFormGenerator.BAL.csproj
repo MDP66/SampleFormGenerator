@@ -37,5 +37,18 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Forms.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SampleFormGenerator.DAL\SampleFormGenerator.DAL.csproj">
+      <Project>{9764744f-7d54-41c7-aa40-b1dba8709cd1}</Project>
+      <Name>SampleFormGenerator.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SampleFormGenerator.Model\SampleFormGenerator.Model.csproj">
+      <Project>{eca94f7d-cbc9-4ca7-a0df-ba8d0f934f68}</Project>
+      <Name>SampleFormGenerator.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
