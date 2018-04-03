@@ -1,4 +1,6 @@
 ﻿@model List<vmForms>
+@using SampleFormGenerator.WebUIMVC.Tools
+
 @{
     ViewBag.Title = "Index";
 }
@@ -21,7 +23,8 @@
                         <h4 class="my-0 font-weight-normal">@item.FormTitle</h4>
                     </div>
                     <div class="card-body">
-                        <a href="@Url.Action("index", "Form", new { id = item.FormId })" class="btn btn-lg btn-block btn-outline-primary">پر کردن فرم</a>
+                        <a href="@Url.Action("index", "Form", new { id = item.FormId })/@item.FormTitle.PrepareForUI()" class="btn btn-lg btn-outline-primary">پر کردن فرم</a>
+                        <a href="@Url.Action("index", "Form", new { id = item.FormId })/@item.FormTitle.PrepareForUI()" class="btn btn-lg btn-outline-success">سوابق ورود اطلاعات</a>
                     </div>
                 </div>
                 }

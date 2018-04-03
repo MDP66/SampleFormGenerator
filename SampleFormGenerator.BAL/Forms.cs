@@ -3,15 +3,21 @@ using SampleFormGenerator.Model.ViewModel;
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
+using SampleFormGenerator.Model.Entities;
+using SampleFormGenerator.Model.Contracts;
+using SampleFormGenerator.BAL.Contracts;
 
 namespace SampleFormGenerator.BAL
 {
-    public class Forms
+    public class Forms : IFrom
     {
-        private FormInfosRepository formInfosRepository { get; set; }
-        public Forms(FormInfosRepository formInfosRepository)
+        private IRepository<TblFormInfos> formInfosRepository;
+        private GeneralRepository generalRepository;
+        public Forms(IRepository<TblFormInfos> formInfosRepository, GeneralRepository generalRepository)
         {
             this.formInfosRepository = formInfosRepository;
+            this.generalRepository = generalRepository;
         }
 
         public async Task<List<vmForms>> GetAvailableForms()
@@ -23,6 +29,12 @@ namespace SampleFormGenerator.BAL
                 results.Add(new vmForms(item.Id, item.Title));
             }
             return results;
+        }
+
+        public async Task<List<vmParameters>> GetFormLayoutAsync(int id)
+        {
+            var parameters = await generalRepository.QueryAsync<vmParameters>("EXEC GetFormDesign @id = @id", new { id });
+            return parameters.ToList();
         }
     }
 }

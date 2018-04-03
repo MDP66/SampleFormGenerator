@@ -1,0 +1,3 @@
+﻿@model vmParameters
+<label class="label" for="param-@Model.Id">@Model.ParamterTitle</label>
+<input id="param-@Model.Id" type="number" name="param-@Model.Id" class="form-control" value="@Model.Value" @(Model.IsMandotory ? "required" : "") @(String.IsNullOrEmpty(Model.RegexValidator) ? "" : "pattern='" + Model.RegexValidator + "'") />

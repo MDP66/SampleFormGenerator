@@ -1,0 +1,21 @@
+﻿@model List<vmParameters>
+@{
+    ViewBag.Title = "Index";
+}
+<form action="/" method="post">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-6">
+                @Html.Partial(item.EditorType, item)
+            </div>
+        }
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col">
+            <input type="submit" class="btn btn-success" value="Save" />
+        </div>
+    </div>
+</form>
+

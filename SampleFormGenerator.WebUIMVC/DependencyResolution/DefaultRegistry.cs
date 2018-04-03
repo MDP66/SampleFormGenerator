@@ -17,7 +17,9 @@
 
 namespace SampleFormGenerator.WebUIMVC.DependencyResolution {
     using SampleFormGenerator.BAL;
+    using SampleFormGenerator.BAL.Contracts;
     using SampleFormGenerator.Model.Contracts;
+    using SampleFormGenerator.Model.Entities;
     using StructureMap.Configuration.DSL;
     using StructureMap.Graph;
 	
@@ -32,7 +34,9 @@ namespace SampleFormGenerator.WebUIMVC.DependencyResolution {
 					scan.With(new ControllerConvention());
                 });
             For<IConnection>().Use<DAL.Tools.SqlDbConnection>();
-            For<Forms>().Use<Forms>();
+            For<IRepository<TblFormInfos>>().Use<DAL.Repositories.FormInfosRepository>();
+            For<DAL.Repositories.GeneralRepository>().Use<DAL.Repositories.GeneralRepository>();
+            For<IFrom>().Use<Forms>();
         }
 
         #endregion

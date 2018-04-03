@@ -14,10 +14,18 @@ namespace SampleFormGenerator.WebUIMVC
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "forms",
+                url: "Form/{id}/{Title}",
+                defaults: new { controller = "Form", action = "Index" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            
         }
     }
 }
