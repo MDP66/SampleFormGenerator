@@ -4,4 +4,7 @@
 <input type="hidden" name="model[@Model.ParameterOrder].Id" value="@Model.Id" />
 <input type="hidden" name="model[@Model.ParameterOrder].TypeId" value="@Model.TypeId" />
 <input type="hidden" name="model[@Model.ParameterOrder].Type" value="@Model.Type" />
-<input id="param-@Model.Id" type="number" name="model[@Model.ParameterOrder].Value" value="@Model.Value" class="form-control" @(Model.IsMandotory ? "required" : "") @(String.IsNullOrEmpty(Model.RegexValidator) ? "" : "pattern=" + Model.RegexValidator) />
+<input id="param-@Model.Id" type="text" name="model[@Model.ParameterOrder].Value" value="@Model.Value" class="form-control pdate" @(Model.IsMandotory ? "required" : "") @(String.IsNullOrEmpty(Model.RegexValidator) ? "" : "pattern=" + Model.RegexValidator) />
+<script>
+    var objCal_@Model.Id = new AMIB.persianCalendar( 'param-@Model.Id' );
+</script>

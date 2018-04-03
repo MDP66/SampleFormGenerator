@@ -10,6 +10,7 @@ using SampleFormGenerator.BAL.Contracts;
 using System;
 using System.Data;
 using System.Text.RegularExpressions;
+using System.Transactions;
 
 namespace SampleFormGenerator.BAL
 {
@@ -19,7 +20,7 @@ namespace SampleFormGenerator.BAL
         private IRepository<TblFormData> formDataRepository;
         private IRepository<TblFormValues> formValueRepository;
         private GeneralRepository generalRepository;
-        
+
 
         public Forms(IRepository<TblFormInfos> formInfosRepository,
                      IRepository<TblFormData> formDataRepository,
@@ -50,38 +51,44 @@ namespace SampleFormGenerator.BAL
             }
         }
 
-        public async Task<List<vmParameters>> GetFormLayoutAsync(int id)
+        public async Task<List<vmParameterData>> GetFormLayoutAsync(int id)
         {
             try
             {
-                var parameters = await generalRepository.QueryAsync<vmParameters>("EXEC GetFormDesign @id = @id", new { id });
+                var parameters = await generalRepository.QueryAsync<vmParameterData>("EXEC GetFormDesign @id = @id", new { id });
                 return parameters.ToList();
             }
             catch (System.Exception)
             {
-                return new List<vmParameters>();
+                return new List<vmParameterData>();
             }
         }
 
+        #region Save
         public async Task<vmSaveState> SaveFormAsync(int id, List<vmParameterData> model)
         {
             var state = new vmSaveState();
             state.State = false;
 
             var connection = new DAL.Tools.SqlDbConnection().CreateDbConnection();
-            var tran = connection.BeginTransaction();
+            setConnection(connection);
+            var tran = new TransactionScope(TransactionScopeOption.Required);
             try
             {
-                setConnection(connection);
-                connection.BeginTransaction();
                 var formData = await SaveFormDataAsync(id);
                 var saveData = await SaveFormValuesAsync(formData.Id, model);
-                tran.Commit();
+                //tran.Commit();
+                tran.Complete();
+                state.State = true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 state.ErrorMessage = "There is an error while saving your data.";
-                tran.Rollback();
+                //tran.Rollback();
+            }
+            finally
+            {
+                connection.Close();
             }
             return state;
         }
@@ -94,12 +101,12 @@ namespace SampleFormGenerator.BAL
         /// <returns></returns>
         private async Task<bool> SaveFormValuesAsync(int id, List<vmParameterData> model)
         {
-            foreach (var item in model.AsParallel())
+            foreach (var item in model)
             {
                 await formValueRepository.SaveAsync(new TblFormValues
                 {
                     Id_FormData = id,
-                    Id_ParameterTypeId = item.Id,
+                    Id_FormInfoParamater = item.Id,
                     IsValidationPassed = validateResult(item.RegexValidator, item.Value),
                     Value = item.Value
                 });
@@ -138,8 +145,11 @@ namespace SampleFormGenerator.BAL
         /// <param name="connection"></param>
         private void setConnection(IDbConnection connection)
         {
+            connection.Open();
             formDataRepository.injectConnection(connection);
             formValueRepository.injectConnection(connection);
         }
+        #endregion
+
     }
 }

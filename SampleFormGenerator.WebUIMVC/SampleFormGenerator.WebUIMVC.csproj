@@ -141,6 +141,8 @@
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <Content Include="Content\js-persian-cal.css" />
+    <Content Include="Scripts\js-persian-cal.min.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
@@ -188,6 +190,7 @@
     <Content Include="Views\Shared\NumberEditor.cshtml" />
     <Content Include="Views\Form\Index.cshtml" />
     <Content Include="Views\Shared\NumberView.cshtml" />
+    <Content Include="Views\Shared\DateEditor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

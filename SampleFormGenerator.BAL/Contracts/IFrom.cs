@@ -10,7 +10,7 @@ namespace SampleFormGenerator.BAL.Contracts
     public interface IFrom
     {
         Task<List<vmForms>> GetAvailableForms();
-        Task<List<vmParameters>> GetFormLayoutAsync(int id);
+        Task<List<vmParameterData>> GetFormLayoutAsync(int id);
         Task<vmSaveState> SaveFormAsync(int id, List<vmParameterData> model);
     }
 }

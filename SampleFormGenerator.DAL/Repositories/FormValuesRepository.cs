@@ -37,7 +37,7 @@ namespace SampleFormGenerator.DAL.Repositories
 
         public async Task<TblFormValues> SaveAsync(TblFormValues model)
         {
-            var insertQuery = $"INSERT INTO {TableName}(Id_ParameterTypeId,Id_FormData,Value,IsValidationPassed) VALUES(@Id_ParameterTypeId,@Id_FormData,@Value,@IsValidationPassed);SELECT SCOPE_IDENTITY()";
+            var insertQuery = $"INSERT INTO {TableName}(Id_FormInfoParamater,Id_FormData,Value,IsValidationPassed) VALUES(@Id_FormInfoParamater,@Id_FormData,@Value,@IsValidationPassed);SELECT SCOPE_IDENTITY()";
             var id = await Db.ExecuteScalarAsync<int>(insertQuery, model);
             model.Id = id;
             return model;
@@ -51,7 +51,7 @@ namespace SampleFormGenerator.DAL.Repositories
 
         public async Task<TblFormValues> UpdateAsync(TblFormValues model)
         {
-            var updateQuery = $"UPDATE {TableName} SET Id_ParameterTypeId=@Id_ParameterTypeId,Id_FormData=@Id_FormData,Value=@Value,IsValidationPassed=@IsValidationPassed WHERE Id = @Id";
+            var updateQuery = $"UPDATE {TableName} SET Id_FormInfoParamater=@Id_FormInfoParamater,Id_FormData=@Id_FormData,Value=@Value,IsValidationPassed=@IsValidationPassed WHERE Id = @Id";
             var result = await Db.ExecuteScalarAsync<int>(updateQuery, model);
             return model;
         }

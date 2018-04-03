@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string ParamterTitle { get; set; }
+        public int TypeId { get; set; }
         public bool IsMandotory { get; set; }
         public short ParameterOrder { get; set; }
         public string RegexValidator { get; set; }

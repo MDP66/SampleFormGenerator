@@ -34,7 +34,13 @@ namespace SampleFormGenerator.WebUIMVC.DependencyResolution {
 					scan.With(new ControllerConvention());
                 });
             For<IConnection>().Use<DAL.Tools.SqlDbConnection>();
+
             For<IRepository<TblFormInfos>>().Use<DAL.Repositories.FormInfosRepository>();
+            For<IRepository<TblFormData>>().Use<DAL.Repositories.FormDataRepository>();
+            For<IRepository<TblFormInfoParameters>>().Use<DAL.Repositories.FormInfoParametersRepository>();
+            For<IRepository<TblFormValues>>().Use<DAL.Repositories.FormValuesRepository>();
+            For<IRepository<TblParameterTypes>>().Use<DAL.Repositories.ParameterTypesRepository>();
+
             For<DAL.Repositories.GeneralRepository>().Use<DAL.Repositories.GeneralRepository>();
             For<IFrom>().Use<Forms>();
         }
