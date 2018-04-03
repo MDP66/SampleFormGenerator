@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SampleFormGenerator.Model.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SampleFormGenerator.Model.Entities
 {
-    public class TblFormInfoParameters
+    public class TblFormInfoParameters : IEntity
     {
         public int Id_FormInfo { get; set; }
         public int Id_ParameterTypes { get; set; }
