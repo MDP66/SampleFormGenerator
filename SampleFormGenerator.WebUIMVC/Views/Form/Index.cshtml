@@ -2,12 +2,12 @@
 @{
     ViewBag.Title = "Index";
 }
-<form action="/" method="post">
+<form action="@Url.Action("Index","Form")" method="post">
     <div class="row">
         @foreach (var item in Model)
         {
             <div class="col-6">
-                @Html.Partial(item.EditorType, item)
+                @Html.Partial(item.Type, item)
             </div>
         }
     </div>
