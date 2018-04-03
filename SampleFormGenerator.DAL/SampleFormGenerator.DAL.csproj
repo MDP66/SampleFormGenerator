@@ -38,6 +38,11 @@
   <ItemGroup />
   <ItemGroup>
     <Compile Include="Repositories\FormDataRepository.cs" />
+    <Compile Include="Repositories\FormInfoParametersRepository.cs" />
+    <Compile Include="Repositories\FormInfosRepository.cs" />
+    <Compile Include="Repositories\FormValuesRepository.cs" />
+    <Compile Include="Repositories\GeneralRepository.cs" />
+    <Compile Include="Repositories\ParameterTypesRepository.cs" />
     <Compile Include="Tools\PrepareWhereConditionExtention.cs" />
     <Compile Include="Tools\SqlDbConnection.cs" />
   </ItemGroup>
