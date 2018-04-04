@@ -69,4 +69,7 @@
     <Build Include="dbo\Tables\TblFormInfoParameters.sql" />
     <Build Include="dbo\Stored Procedures\GetFormDesign.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Script.PostDeployment.sql" />
+  </ItemGroup>
 </Project>
