@@ -7,4 +7,9 @@
 <input id="param-@Model.Id" type="text" name="model[@Model.ParameterOrder].Value" value="@Model.Value" class="form-control pdate" @(Model.IsMandotory ? "required" : "") @(String.IsNullOrEmpty(Model.RegexValidator) ? "" : "pattern=" + Model.RegexValidator) />
 <script>
     var objCal_@Model.Id = new AMIB.persianCalendar( 'param-@Model.Id' );
+
+    @if (!String.IsNullOrEmpty(Model.RegexValidator))
+    {
+
+    }
 </script>

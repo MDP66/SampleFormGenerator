@@ -2,7 +2,8 @@
 @{
     ViewBag.Title = "Index";
 }
-<form action="@Url.Action("Index","Form")" method="post">
+
+<form action="@Url.Action("Index","Form")" method="post" id="frm-Data">
     <input type="hidden" name="Id" value="@ViewBag.Id" />
     <div class="row">
         @if(ViewBag.Error != null)
@@ -24,8 +25,31 @@
     <hr/>
     <div class="row">
         <div class="col">
-            <input type="submit" class="btn btn-success" value="Save" />
+            <input type="submit" class="btn btn-success" value="Save" id="btnSave" />
         </div>
     </div>
 </form>
+@section Scripts {
+    @{ 
+        var model_items_with_regex = Model.Where(c => !String.IsNullOrEmpty(c.RegexValidator));
+    }
+    <script>
+        $("#btnSave").click(function () {
+            $("#frm-Data").validate({
+                    rules: {
+                        @foreach (var rule in model_items_with_regex)
+                        {
+                            @:param-@rule.Id : { pattern: /@rule.RegexValidator/ },
+                        }
+                    },
+                    messages :{
+                        @foreach (var rule in model_items_with_regex)
+                        {
+                            @:param-@rule.Id : { pattern: '@rule.RegexValidatorMessage' },
+                        }
+                    }
+            });
+        })
+    </script>
+}
 

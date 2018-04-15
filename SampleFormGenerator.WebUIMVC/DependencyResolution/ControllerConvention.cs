@@ -23,6 +23,8 @@ namespace SampleFormGenerator.WebUIMVC.DependencyResolution {
     using StructureMap.Graph;
     using StructureMap.Pipeline;
     using StructureMap.TypeRules;
+    using StructureMap;
+    using StructureMap.Graph.Scanning;
 
     public class ControllerConvention : IRegistrationConvention {
         #region Public Methods and Operators
@@ -31,6 +33,11 @@ namespace SampleFormGenerator.WebUIMVC.DependencyResolution {
             if (type.CanBeCastTo<Controller>() && !type.IsAbstract) {
                 registry.For(type).LifecycleIs(new UniquePerRequestLifecycle());
             }
+        }
+
+        public void ScanTypes(TypeSet types, Registry registry)
+        {
+            //throw new NotImplementedException();
         }
 
         #endregion

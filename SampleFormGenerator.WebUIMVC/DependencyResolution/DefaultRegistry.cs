@@ -20,6 +20,7 @@ namespace SampleFormGenerator.WebUIMVC.DependencyResolution {
     using SampleFormGenerator.BAL.Contracts;
     using SampleFormGenerator.Model.Contracts;
     using SampleFormGenerator.Model.Entities;
+    using StructureMap;
     using StructureMap.Configuration.DSL;
     using StructureMap.Graph;
 	

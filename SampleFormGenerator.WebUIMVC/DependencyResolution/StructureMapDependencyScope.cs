@@ -20,11 +20,11 @@ namespace SampleFormGenerator.WebUIMVC.DependencyResolution {
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
-
-    using Microsoft.Practices.ServiceLocation;
+    
 
     using StructureMap;
-	
+    using CommonServiceLocator;
+
     /// <summary>
     /// The structure map dependency scope.
     /// </summary>
